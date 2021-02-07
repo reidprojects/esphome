@@ -6,12 +6,12 @@ namespace wiegand_reader {
 
 static const char *TAG = "wiegand_reader";
 
-void ICACHE_RAM_ATTR WiegandReader::pin_state_changed_(WiegandReader *reader) {
+void ICACHE_RAM_ATTR pin_state_changed(WiegandReader *reader) {
   reader->wiegand_.setPin0State(reader->pin_d0_->digital_read());
   reader->wiegand_.setPin1State(reader->pin_d1_->digital_read());
 }
 
-void WiegandReader::received_data_(uint8_t *data, uint8_t bits, WiegandReader *reader) {
+void received_data(uint8_t *data, uint8_t bits, WiegandReader *reader) {
   uint8_t byte_count = (bits + 7) / 8;
 
   String code = "";
@@ -24,7 +24,7 @@ void WiegandReader::received_data_(uint8_t *data, uint8_t bits, WiegandReader *r
     trigger->process(code);
 }
 
-void WiegandReader::received_data_error_(Wiegand::DataError error, uint8_t *raw_data, uint8_t raw_bits,
+void received_data_error(Wiegand::DataError error, uint8_t *raw_data, uint8_t raw_bits,
                                          const char *message) {
   ESP_LOGE(TAG, "FAILED : %s", message);
   ESP_LOGE(TAG, "   ERROR : %s", Wiegand::DataErrorStr(error));
@@ -42,16 +42,16 @@ void WiegandReader::received_data_error_(Wiegand::DataError error, uint8_t *raw_
 void WiegandReader::setup() {
   this->pin_d0_->pin_mode(INPUT);
   this->pin_d1_->pin_mode(INPUT);
-  this->wiegand_.onReceive(WiegandReader::received_data_, this);
-  this->wiegand_.onReceiveError(WiegandReader::received_data_error_, "Card read error: ");
+  this->wiegand_.onReceive(received_data, this);
+  this->wiegand_.onReceiveError(received_data_error, "Card read error: ");
 
   this->dump_config();
 
   this->wiegand_.begin(0xFF, true);
 
-  this->pin_d0_->attach_interrupt(WiegandReader::pin_state_changed_, this, CHANGE);
-  this->pin_d1_->attach_interrupt(WiegandReader::pin_state_changed_, this, CHANGE);
-  this->pin_state_changed_(this);
+  this->pin_d0_->attach_interrupt(pin_state_changed, this, CHANGE);
+  this->pin_d1_->attach_interrupt(pin_state_changed, this, CHANGE);
+  pin_state_changed(this);
 }
 
 void WiegandReader::update() {
@@ -59,7 +59,7 @@ void WiegandReader::update() {
   this->wiegand_.flush();
 }
 
-void WiegandReader::set_data_pins(GPIOPin *pin_d0, GPIOPin *pin_d1){
+void WiegandReader::set_data_pins(GPIOPin *pin_d0, GPIOPin *pin_d1) {
   this->pin_d0_ = pin_d0;
   this->pin_d1_ = pin_d1;
 }
