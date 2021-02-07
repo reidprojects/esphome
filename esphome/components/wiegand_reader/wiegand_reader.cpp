@@ -24,8 +24,7 @@ void received_data(uint8_t *data, uint8_t bits, WiegandReader *reader) {
     trigger->process(code);
 }
 
-void received_data_error(Wiegand::DataError error, uint8_t *raw_data, uint8_t raw_bits,
-                                         const char *message) {
+void received_data_error(Wiegand::DataError error, uint8_t *raw_data, uint8_t raw_bits, const char *message) {
   ESP_LOGE(TAG, "FAILED : %s", message);
   ESP_LOGE(TAG, "   ERROR : %s", Wiegand::DataErrorStr(error));
 
