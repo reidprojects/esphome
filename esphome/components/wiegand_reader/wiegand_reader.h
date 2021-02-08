@@ -22,9 +22,6 @@ class WiegandReader : public PollingComponent {
   void register_trigger(WiegandReaderTrigger *trig) { this->triggers_.push_back(trig); }
 
  protected:
-  /*static void received_data_(uint8_t *data, uint8_t bits, WiegandReader *reader);
-  static void pin_state_changed_(WiegandReader *reader);
-  static void received_data_error_(Wiegand::DataError error, uint8_t *raw_data, uint8_t raw_bits, const char *message);/*
   Wiegand wiegand_;
   GPIOPin *pin_d0_;
   GPIOPin *pin_d1_;
