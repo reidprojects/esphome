@@ -47,7 +47,7 @@ void ES8388Component::setup() {
   this->write_bytes(0x1D, {0x1C});
 
   // ADC power-up enabled
-  this->write_bytes(0x03, {0x38});
+  this->write_bytes(0x03, {0x00});
   // DAC power-up LOUT1/ROUT1 enabled
   this->write_bytes(0x04, {0x30});
 
