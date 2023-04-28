@@ -11,10 +11,11 @@ void ES8388Component::setup() {
 
   // reset
   this->write_bytes(0x00, {0x80});
-  this->write_bytes(0x00, {0x00});
+  this->write_bytes(0x00, {0x12});
   // mute
   this->write_bytes(0x19, {0x04});
-  this->write_bytes(0x01, {0x50});
+
+  // this->write_bytes(0x01, {0x50});
   // powerup
   this->write_bytes(0x02, {0x00});
   // worker mode
